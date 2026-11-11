@@ -9,8 +9,8 @@ not a commitment to build everything at once.
 - [x] Create the React/Vite starter and open it in the browser.
 - [x] Confirm Git is installed.
 - [x] Initialise a local Git repository on main.
-- [ ] Commit the starter project and this checklist.
-- [ ] Create a GitHub repository and push the initial commit.
+- [x] Commit the starter project and this checklist.
+- [x] Create a GitHub repository and push the initial commit.
 - [ ] Practise a feature branch, focused commits, and a pull request.
 
 ## App Features
