@@ -17,7 +17,7 @@ function App() {
         >
           Record encounter
         </button>
-        
+
         <button
           type="button"
           className="counter"

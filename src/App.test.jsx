@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import App from './App'
 
 describe('Shiny Counter', () => {
-  afterEach(() => cleanup())    
+  afterEach(() => cleanup())
   it('starts with zero encounters', () => {
     render(<App />)
 
