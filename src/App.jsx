@@ -28,6 +28,18 @@ function App() {
           Undo encounter
         </button>
 
+        <button
+          type="button"
+          className="counter"
+          onClick={() => {
+            if (window.confirm('Reset this hunt?')) {
+              setCount(0)
+            }
+          }}
+        >
+          Reset hunt
+        </button>
+
       </section>
     </main>
   )
