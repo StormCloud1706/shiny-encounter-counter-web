@@ -16,7 +16,8 @@ not a commitment to build everything at once.
 ## App Features
 
 - [ ] Build a single-hunt layout with a Pokemon selection.
-- [ ] Add increment, decrement (never below zero), and confirmed reset.
+- [x] Add increment and decrement controls (never below zero).
+- [ ] Add a confirmed reset.
 - [ ] Save and restore hunts using localStorage.
 - [ ] Support multiple active hunts and completed hunts.
 - [ ] Add Pokemon sprites with loading and error states.
@@ -29,7 +30,7 @@ not a commitment to build everything at once.
 
 ## Quality and Portfolio
 
-- [ ] Introduce automated tests alongside the first counter behaviour.
+- [x] Introduce automated tests alongside the first counter behaviour.
 - [ ] Test saving/restoring, import/export, and odds as they are added.
 - [ ] Add a browser test for the main hunting workflow.
 - [ ] Run automated checks on GitHub for pull requests.
