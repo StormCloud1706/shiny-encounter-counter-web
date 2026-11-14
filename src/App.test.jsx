@@ -1,10 +1,13 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 
 describe('Shiny Counter', () => {
-  afterEach(() => cleanup())
+    afterEach(() => {
+        cleanup()
+        vi.restoreAllMocks()
+    })
   it('starts with zero encounters', () => {
     render(<App />)
 
@@ -29,6 +32,26 @@ describe('Shiny Counter', () => {
     const undoButton = screen.getByText('Undo encounter')
     await undoButton.click()
 
+    expect(screen.getByText('Encounters: 0')).toBeInTheDocument()
+  })
+    it('keeps the count when reset is cancelled', async () => {
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+    render(<App />)
+
+    await screen.getByText('Record encounter').click()
+    await screen.getByText('Reset hunt').click()
+
+    expect(confirm).toHaveBeenCalledWith('Reset this hunt?')
+    expect(screen.getByText('Encounters: 1')).toBeInTheDocument()
+  })
+    it('resets the count when reset is confirmed', async () => {
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
+    render(<App />)
+
+    await screen.getByText('Record encounter').click()
+    await screen.getByText('Reset hunt').click()
+
+    expect(confirm).toHaveBeenCalledWith('Reset this hunt?')
     expect(screen.getByText('Encounters: 0')).toBeInTheDocument()
   })
 })

@@ -17,7 +17,7 @@ not a commitment to build everything at once.
 
 - [ ] Build a single-hunt layout with a Pokemon selection.
 - [x] Add increment and decrement controls (never below zero).
-- [ ] Add a confirmed reset.
+- [x] Add a confirmed reset.
 - [ ] Save and restore hunts using localStorage.
 - [ ] Support multiple active hunts and completed hunts.
 - [ ] Add Pokemon sprites with loading and error states.
