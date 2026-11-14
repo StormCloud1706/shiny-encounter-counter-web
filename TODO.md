@@ -11,7 +11,7 @@ not a commitment to build everything at once.
 - [x] Initialise a local Git repository on main.
 - [x] Commit the starter project and this checklist.
 - [x] Create a GitHub repository and push the initial commit.
-- [ ] Practise a feature branch, focused commits, and a pull request.
+- [x] Practise a feature branch, focused commits, and a pull request.
 
 ## App Features
 
