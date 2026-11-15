@@ -17,7 +17,7 @@ not a commitment to build everything at once.
 
 - [ ] Build a single-hunt layout with a Pokemon selection.
 - [x] Search the Pokemon catalogue by name.
-- [ ] Filter the Pokemon catalogue by generation.
+- [x] Filter the Pokemon catalogue by generation.
 - [ ] Display the selected Pokemon's sprite with loading and error states.
 - [ ] Style the hunt screen with a polished, responsive layout.
 - [x] Add increment and decrement controls (never below zero).

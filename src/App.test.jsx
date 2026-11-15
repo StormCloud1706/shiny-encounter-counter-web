@@ -8,14 +8,45 @@ const pokemonCatalogResponse = {
   results: [
     { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' },
     { name: 'eevee', url: 'https://pokeapi.co/api/v2/pokemon/133/' },
+    { name: 'chikorita', url: 'https://pokeapi.co/api/v2/pokemon/152/' },
   ],
+}
+
+const pokemonGenerationListResponse = {
+  results: [
+    { name: 'generation-i', url: 'https://pokeapi.co/api/v2/generation/1/' },
+    { name: 'generation-ii', url: 'https://pokeapi.co/api/v2/generation/2/' },
+  ],
+}
+
+const generationOneResponse = {
+  id: 1,
+  pokemon_species: [{ name: 'pikachu' }, { name: 'eevee' }],
+}
+
+const generationTwoResponse = {
+  id: 2,
+  pokemon_species: [{ name: 'chikorita' }],
 }
 
 beforeEach(() => {
   localStorage.clear()
-  vi.spyOn(globalThis, 'fetch').mockResolvedValue({
-    ok: true,
-    json: async () => pokemonCatalogResponse,
+  vi.spyOn(globalThis, 'fetch').mockImplementation(async (url) => {
+    const requestUrl = String(url)
+    let responseData = pokemonCatalogResponse
+
+    if (requestUrl.includes('/generation?')) {
+      responseData = pokemonGenerationListResponse
+    } else if (requestUrl.includes('/generation/1/')) {
+      responseData = generationOneResponse
+    } else if (requestUrl.includes('/generation/2/')) {
+      responseData = generationTwoResponse
+    }
+
+    return {
+      ok: true,
+      json: async () => responseData,
+    }
   })
 })
 
@@ -94,6 +125,22 @@ describe('Shiny Counter', () => {
 
     expect(
       screen.getByRole('option', { name: 'Eevee' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByRole('option', { name: 'Pikachu' }),
+    ).not.toBeInTheDocument()
+  })
+  it('filters the catalogue by generation', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+
+    const generationFilter = await screen.findByRole('combobox', {
+      name: 'Filter by generation',
+    })
+    await user.selectOptions(generationFilter, '2')
+
+    expect(
+      screen.getByRole('option', { name: 'Chikorita' }),
     ).toBeInTheDocument()
     expect(
       screen.queryByRole('option', { name: 'Pikachu' }),
