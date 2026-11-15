@@ -18,13 +18,12 @@ not a commitment to build everything at once.
 - [ ] Build a single-hunt layout with a Pokemon selection.
 - [x] Search the Pokemon catalogue by name.
 - [x] Filter the Pokemon catalogue by generation.
-- [ ] Display the selected Pokemon's sprite with loading and error states.
+- [x] Display the selected Pokemon's sprite with loading and error states.
 - [ ] Style the hunt screen with a polished, responsive layout.
 - [x] Add increment and decrement controls (never below zero).
 - [x] Add a confirmed reset.
 - [ ] Save and restore hunts using localStorage.
 - [ ] Support multiple active hunts and completed hunts.
-- [ ] Add Pokemon sprites with loading and error states.
 - [ ] Add game, hunting method, and relevant bonus selections.
 - [ ] Calculate odds using verified rules and documented sources.
 - [ ] Export hunts to a JSON file for backup.

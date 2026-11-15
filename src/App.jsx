@@ -5,6 +5,7 @@ const CATALOG_URL = 'https://pokeapi.co/api/v2/pokemon-species?limit=2000'
 const CATALOG_CACHE_KEY = 'shiny-counter.pokemon-species.v1'
 const GENERATION_URL = 'https://pokeapi.co/api/v2/generation?limit=20'
 const GENERATION_CACHE_KEY = 'shiny-counter.generations.v1'
+const SPRITE_CACHE_KEY = 'shiny-counter.shiny-sprite.v1'
 
 async function getPokemonCatalog() {
   const cachedCatalog = localStorage.getItem(CATALOG_CACHE_KEY)
@@ -61,6 +62,28 @@ async function getPokemonGenerations() {
   return generations
 }
 
+async function getPokemonSprite(name) {
+  const cacheKey = `${SPRITE_CACHE_KEY}:${name}`
+  const cachedSprite = localStorage.getItem(cacheKey)
+  if (cachedSprite) {
+    return cachedSprite
+  }
+
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+  if (!response.ok) {
+    throw new Error('Could not load the Pokemon sprite')
+  }
+
+  const data = await response.json()
+  const spriteUrl = data.sprites?.front_shiny
+  if (!spriteUrl) {
+    throw new Error('Shiny sprite is unavailable')
+  }
+
+  localStorage.setItem(cacheKey, spriteUrl)
+  return spriteUrl
+}
+
 function formatPokemonName(name) {
   return name
     .split('-')
@@ -76,6 +99,8 @@ function App() {
   const [selectedGeneration, setSelectedGeneration] = useState('')
   const [catalogStatus, setCatalogStatus] = useState('loading')
   const [searchText, setSearchText] = useState('')
+  const [spriteUrl, setSpriteUrl] = useState('')
+  const [spriteStatus, setSpriteStatus] = useState('idle')
 
   const selectedGenerationData = pokemonGenerations.find(
     (generation) => generation.id === Number(selectedGeneration),
@@ -113,6 +138,32 @@ function App() {
       isMounted = false
     }
   }, [])
+
+  useEffect(() => {
+    if (!selectedPokemon) {
+      return
+    }
+
+    let isCurrentSelection = true
+
+    getPokemonSprite(selectedPokemon)
+      .then((url) => {
+        if (isCurrentSelection) {
+          setSpriteUrl(url)
+          setSpriteStatus('ready')
+        }
+      })
+      .catch(() => {
+        if (isCurrentSelection) {
+          setSpriteUrl('')
+          setSpriteStatus('error')
+        }
+      })
+
+    return () => {
+      isCurrentSelection = false
+    }
+  }, [selectedPokemon])
 
   return (
     <main id="center">
@@ -152,7 +203,12 @@ function App() {
             <select
               id="pokemon-choice"
               value={selectedPokemon}
-              onChange={(event) => setSelectedPokemon(event.target.value)}
+              onChange={(event) => {
+                const nextPokemon = event.target.value
+                setSelectedPokemon(nextPokemon)
+                setSpriteUrl('')
+                setSpriteStatus(nextPokemon ? 'loading' : 'idle')
+              }}
             >
               <option value="">Select a Pokemon</option>
               {filteredPokemon.map((entry) => (
@@ -168,6 +224,21 @@ function App() {
             ? `${formatPokemonName(selectedPokemon)} hunt`
             : 'Choose a Pokemon to begin'}
         </h2>
+        {spriteStatus === 'loading' && (
+          <p role="status">Loading shiny sprite...</p>
+        )}
+        {spriteStatus === 'error' && (
+          <p role="alert">Shiny sprite unavailable.</p>
+        )}
+        {spriteStatus === 'ready' && (
+          <img
+            className="pokemon-sprite"
+            src={spriteUrl}
+            width="160"
+            height="160"
+            alt={`${formatPokemonName(selectedPokemon)} shiny sprite`}
+          />
+        )}
         <p aria-live="polite">Encounters: {count}</p>
         <button
           type="button"

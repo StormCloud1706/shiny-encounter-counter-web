@@ -29,6 +29,17 @@ const generationTwoResponse = {
   pokemon_species: [{ name: 'chikorita' }],
 }
 
+const eeveeDetailsResponse = {
+  sprites: {
+    front_shiny:
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/133.png',
+  },
+}
+
+const chikoritaDetailsResponse = {
+  sprites: { front_shiny: null },
+}
+
 beforeEach(() => {
   localStorage.clear()
   vi.spyOn(globalThis, 'fetch').mockImplementation(async (url) => {
@@ -41,6 +52,10 @@ beforeEach(() => {
       responseData = generationOneResponse
     } else if (requestUrl.includes('/generation/2/')) {
       responseData = generationTwoResponse
+    } else if (requestUrl.includes('/pokemon/eevee')) {
+      responseData = eeveeDetailsResponse
+    } else if (requestUrl.includes('/pokemon/chikorita')) {
+      responseData = chikoritaDetailsResponse
     }
 
     return {
@@ -113,6 +128,22 @@ describe('Shiny Counter', () => {
     expect(
       screen.getByRole('heading', { name: 'Eevee hunt' }),
     ).toBeInTheDocument()
+    expect(
+      await screen.findByRole('img', { name: 'Eevee shiny sprite' }),
+    ).toHaveAttribute('src', eeveeDetailsResponse.sprites.front_shiny)
+  })
+  it('explains when a shiny sprite is unavailable', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+
+    const pokemonPicker = await screen.findByRole('combobox', {
+      name: 'Choose a Pokemon',
+    })
+    await user.selectOptions(pokemonPicker, 'chikorita')
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Shiny sprite unavailable.',
+    )
   })
     it('filters the catalogue by search text', async () => {
     const user = userEvent.setup()
