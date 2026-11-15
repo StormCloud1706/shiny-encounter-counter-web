@@ -15,11 +15,13 @@ not a commitment to build everything at once.
 
 ## App Features
 
-- [ ] Build a single-hunt layout with a Pokemon selection.
+- [x] Build a single-hunt layout with a Pokemon selection.
 - [x] Search the Pokemon catalogue by name.
 - [x] Filter the Pokemon catalogue by generation.
+- [x] Filter the Pokemon catalogue by type.
 - [x] Display the selected Pokemon's sprite with loading and error states.
-- [ ] Style the hunt screen with a polished, responsive layout.
+- [x] Use the shiny sparkle mark as the browser-tab icon.
+- [x] Style the hunt screen with a polished, responsive layout.
 - [x] Add increment and decrement controls (never below zero).
 - [x] Add a confirmed reset.
 - [ ] Save and restore hunts using localStorage.
@@ -29,7 +31,8 @@ not a commitment to build everything at once.
 - [ ] Export hunts to a JSON file for backup.
 - [ ] Import hunts with data validation and clear duplicate handling.
 - [ ] Add light/dark mode and remember the preference.
-- [ ] Make the app usable on mobile and with a keyboard.
+- [x] Make the hunt screen responsive on mobile.
+- [ ] Verify all hunt controls are usable with a keyboard.
 
 ## Quality and Portfolio
 
@@ -37,7 +40,7 @@ not a commitment to build everything at once.
 - [ ] Test saving/restoring, import/export, and odds as they are added.
 - [ ] Add a browser test for the main hunting workflow.
 - [ ] Run automated checks on GitHub for pull requests.
-- [ ] Replace the starter README with setup, decisions, limitations, and sources.
+- [x] Replace the starter README with setup, decisions, limitations, and sources.
 - [ ] Publish a live demo.
 
 ## Possible Later Phase
