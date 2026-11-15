@@ -1,7 +1,23 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi, beforeEach } from 'vitest'
+import userEvent from '@testing-library/user-event'
 import App from './App'
+
+const pokemonCatalogResponse = {
+  results: [
+    { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' },
+    { name: 'eevee', url: 'https://pokeapi.co/api/v2/pokemon/133/' },
+  ],
+}
+
+beforeEach(() => {
+  localStorage.clear()
+  vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+    ok: true,
+    json: async () => pokemonCatalogResponse,
+  })
+})
 
 describe('Shiny Counter', () => {
     afterEach(() => {
@@ -53,5 +69,18 @@ describe('Shiny Counter', () => {
 
     expect(confirm).toHaveBeenCalledWith('Reset this hunt?')
     expect(screen.getByText('Encounters: 0')).toBeInTheDocument()
+  })
+  it('updates the hunt heading when a Pokemon is selected', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+
+    const pokemonPicker = await screen.findByRole('combobox', {
+      name: 'Choose a Pokemon',
+    })
+    await user.selectOptions(pokemonPicker, 'eevee')
+
+    expect(
+      screen.getByRole('heading', { name: 'Eevee hunt' }),
+    ).toBeInTheDocument()
   })
 })
