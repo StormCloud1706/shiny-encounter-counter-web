@@ -83,4 +83,20 @@ describe('Shiny Counter', () => {
       screen.getByRole('heading', { name: 'Eevee hunt' }),
     ).toBeInTheDocument()
   })
+    it('filters the catalogue by search text', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+
+    const searchInput = await screen.findByRole('searchbox', {
+      name: 'Search Pokemon',
+    })
+    await user.type(searchInput, 'eev')
+
+    expect(
+      screen.getByRole('option', { name: 'Eevee' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByRole('option', { name: 'Pikachu' }),
+    ).not.toBeInTheDocument()
+  })
 })

@@ -16,7 +16,7 @@ not a commitment to build everything at once.
 ## App Features
 
 - [ ] Build a single-hunt layout with a Pokemon selection.
-- [ ] Search the Pokemon catalogue by name.
+- [x] Search the Pokemon catalogue by name.
 - [ ] Filter the Pokemon catalogue by generation.
 - [ ] Display the selected Pokemon's sprite with loading and error states.
 - [ ] Style the hunt screen with a polished, responsive layout.

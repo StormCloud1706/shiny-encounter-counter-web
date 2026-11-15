@@ -36,6 +36,13 @@ function App() {
   const [pokemonCatalog, setPokemonCatalog] = useState([])
   const [selectedPokemon, setSelectedPokemon] = useState('')
   const [catalogStatus, setCatalogStatus] = useState('loading')
+  const [searchText, setSearchText] = useState('')
+
+  const filteredPokemon = pokemonCatalog.filter((entry) =>
+    formatPokemonName(entry.name)
+      .toLowerCase()
+      .includes(searchText.trim().toLowerCase()),
+  )
 
   useEffect(() => {
     let isMounted = true
@@ -62,7 +69,6 @@ function App() {
     <main id="center">
       <h1>Shiny Counter</h1>
       <section aria-labelledby="hunt-title">
-        <label htmlFor="pokemon-choice">Choose a Pokemon</label>
         {catalogStatus === 'loading' && (
           <p role="status">Loading Pokemon catalog...</p>
         )}
@@ -72,18 +78,28 @@ function App() {
           </p>
         )}
         {catalogStatus === 'ready' && (
-          <select
-            id="pokemon-choice"
-            value={selectedPokemon}
-            onChange={(event) => setSelectedPokemon(event.target.value)}
-          >
-            <option value="">Select a Pokemon</option>
-            {pokemonCatalog.map((entry) => (
-              <option key={entry.name} value={entry.name}>
-                {formatPokemonName(entry.name)}
-              </option>
-            ))}
-          </select>
+          <>
+            <label htmlFor="pokemon-search">Search Pokemon</label>
+            <input
+              id="pokemon-search"
+              type="search"
+              value={searchText}
+              onChange={(event) => setSearchText(event.target.value)}
+            />
+            <label htmlFor="pokemon-choice">Choose a Pokemon</label>
+            <select
+              id="pokemon-choice"
+              value={selectedPokemon}
+              onChange={(event) => setSelectedPokemon(event.target.value)}
+            >
+              <option value="">Select a Pokemon</option>
+              {filteredPokemon.map((entry) => (
+                <option key={entry.name} value={entry.name}>
+                  {formatPokemonName(entry.name)}
+                </option>
+              ))}
+            </select>
+          </>
         )}
         <h2 id="hunt-title">
           {selectedPokemon
